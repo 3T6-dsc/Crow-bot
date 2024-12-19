@@ -28,7 +28,7 @@ module.exports = {
 
                 // Bannir l'utilisateur
                 await member.ban();
-                await message.reply({ content: `L'utilisateur ${user.tag} a été banni.`, ephemeral: true });
+                await message.reply({ content: `L'utilisateur ${user.username} a été banni.`, ephemeral: true });
             } catch (err) {
                 console.error('Erreur lors du bannissement :', err);
                 await message.reply({ content: 'Je n\'ai pas pu bannir cet utilisateur ou envoyer un message privé.', ephemeral: true });
