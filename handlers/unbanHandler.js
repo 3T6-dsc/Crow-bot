@@ -16,14 +16,14 @@ module.exports.handleUnbanCommand = async (message) => {
         .setDescription('Veuillez choisir un membre à débannir en utilisant son ID.');
 
     bannedUsersArray.forEach((ban, index) => {
-        embed.addFields({ name: `ID ${index + 1}`, value: `${ban.user.tag} (ID: ${ban.user.id})` });
+        embed.addFields({ name: `ID ${index + 1}`, value: `${ban.user.username} (ID: ${ban.user.id})` });
     });
 
     // Création des boutons pour chaque utilisateur banni
     const buttons = bannedUsersArray.map((ban, index) => 
         new ButtonBuilder()
             .setCustomId(`unban_${ban.user.id}`)
-            .setLabel(`Débannir ${ban.user.tag}`)
+            .setLabel(`Débannir ${ban.user.username}`)
             .setStyle(ButtonStyle.Primary)
     );
 
