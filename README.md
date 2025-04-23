@@ -1,79 +1,108 @@
-# Crow Bot
+# 🤖 Crow Bot
 
-Crow Bot est un bot Discord conçu pour faciliter la gestion des serveurs Discord avec une série de commandes de modération et de configuration. Il inclut des fonctionnalités telles que la gestion des bans, des rôles automatiques, des messages de bienvenue, et plus encore.
+Un bot Discord polyvalent et puissant développé en JavaScript avec discord.js, offrant des fonctionnalités de modération, d'administration et d'utilitaires.
 
-## Table des Matières
+## ✨ Fonctionnalités
 
-- [Prérequis](#prérequis)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Commandes](#commandes)
-- [Contribuer](#contribuer)
-- [Licence](#licence)
+- 🛡️ **Modération**: Gestion des membres, messages, et infractions
+- ⚙️ **Administration**: Configuration du serveur et des paramètres du bot
+- 🛠️ **Utilitaires**: Commandes pratiques pour les utilisateurs
+- 📊 **Embeds**: Création d'embeds personnalisés
+- 🔒 **Système de permissions**: Gestion fine des accès aux commandes
+- ⚡ **Performance**: Temps de réponse optimisé
+- 🔧 **Configuration flexible**: Personnalisation via config.json
 
-## Prérequis
+## 📋 Prérequis
 
-Avant de commencer, assurez-vous que vous avez les éléments suivants :
+- [Node.js](https://nodejs.org/) (v16.11.0 ou supérieur)
+- [npm](https://www.npmjs.com/) (inclus avec Node.js)
+- Un [token de bot Discord](https://discord.com/developers/applications)
 
-- [Node.js](https://nodejs.org/) (version 18 ou supérieure recommandée)
-- [npm](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/) pour la gestion des paquets
-- Un compte Discord et un serveur pour tester le bot
+## 🚀 Installation
 
-## Installation
+1. Clonez le repository :
+```bash
+git clone https://github.com/votre-username/crow-bot.git
+cd crow-bot
+```
 
-1. **Clonez le dépôt :**
+2. Installez les dépendances :
+```bash
+npm install
+```
 
-    ```bash
-    https://github.com/Le-cpe/Crow-bot.git
-    cd Crow-bot
-    ```
+3. Configurez le bot :
+   - Renommez `config.example.json` en `config.json`
+   - Modifiez le fichier avec vos paramètres :
+```json
+{
+    "bot": {
+        "token": "VOTRE_TOKEN_ICI",
+        "prefix": "!",
 
-2. **Installez les dépendances :**
+    }
+```
 
-    ```bash
-    npm install
-    ```
+4. Démarrez le bot :
+```bash
+npm start
+```
 
-## Configuration
+## 📝 Commandes
 
-1. **Lancer le bot :**
+### Modération
+- `!ban`: Bannir un membre
+- `!kick`: Expulser un membre
+- `!mute`: Rendre muet un membre
+- `!clear`: Supprimer des messages
 
-    ```bash
-    npm start
-    ```
+### Utilitaires
+- `!embed`: Créer un embed personnalisé
+- `!help`: Afficher l'aide
+- `!ping`: Vérifier la latence
+- `!serverinfo`: Informations sur le serveur
 
-## Commandes
+### Administration
+- `!config`: Configurer le bot
+- `!prefix`: Changer le préfixe
+- `!setup`: Configuration initiale
 
-### `+ban @user`
-Bannit un utilisateur du serveur.
+## 🔧 Configuration
 
-### `+unban <userID>`
-Débannit un utilisateur en utilisant son ID.
+Le fichier `config.json` permet de personnaliser :
+- Token du bot
+- Préfixe des commandes
+- Couleur des embeds
+- Message de statut
+- Footer des embeds
+- Liste blanche des utilisateurs
+- Et plus encore...
 
-### `+clear <nombre>`
-Supprime un certain nombre de messages dans le salon actuel.
+## 🤝 Contribution
 
-### `+config_bienvenue <channelID>`
-Configure le salon où envoyer un message de bienvenue.
+Les contributions sont les bienvenues ! Pour contribuer :
 
-### `+autorole @role`
-Configure un rôle à attribuer automatiquement aux nouveaux membres.
+1. Fork le projet
+2. Créez une branche (`git checkout -b feature/AmazingFeature`)
+3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une Pull Request
 
-## Contribuer
+## 📜 Licence
 
-Si vous souhaitez contribuer à ce projet, veuillez suivre les étapes ci-dessous :
+Distribué sous la licence MIT. Voir `LICENSE` pour plus d'informations.
 
-1. Forkez le dépôt.
-2. Créez une branche (`git checkout -b feature/YourFeature`).
-3. Effectuez vos modifications.
-4. Commitez vos changements (`git commit -am 'Add new feature'`).
-5. Poussez la branche (`git push origin feature/YourFeature`).
-6. Ouvrez une Pull Request.
+## 📞 Support
 
-## Licence
+Pour obtenir de l'aide ou signaler un bug :
+- Ouvrez une [issue](https://github.com/votre-username/crow-bot/issues)
+- Rejoignez notre [serveur Discord](votre-lien-discord)
 
-Ce projet est sous la [Licence MIT](LICENSE).
+## ⭐ Remerciements
+
+- [discord.js](https://discord.js.org/) pour leur excellent framework
+- La communauté Discord pour leur soutien
+- Tous les contributeurs qui améliorent ce projet
 
 ---
-
-Si vous avez des questions ou des suggestions, n'hésitez pas à ouvrir une issue ou à contacter l'auteur du bot.
+Développé avec ❤️ par 3t6
