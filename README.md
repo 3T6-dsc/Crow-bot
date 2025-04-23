@@ -22,8 +22,8 @@ Un bot Discord polyvalent et puissant développé en JavaScript avec discord.js,
 
 1. Clonez le repository :
 ```bash
-git clone https://github.com/votre-username/crow-bot.git
-cd crow-bot
+git clone https://github.com/3T6-dsc/Crow-bot.git
+cd Crow-bot
 ```
 
 2. Installez les dépendances :
