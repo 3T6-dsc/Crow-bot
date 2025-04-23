@@ -1,6 +1,28 @@
 {
-  "token": "Your token",
-  "prefix": "+",
-  "autoRole": "LeaveBlank",
-  "welcomeChannel": "LeaveBlank" 
+  "bot": {
+    "token": "VOTRE_TOKEN",
+    "prefix": "&",
+    "activity": "Crow Bot",
+    "activityType": "Watching",
+    "status": "dnd"
+  },
+  "embed": {
+    "color": "#FF0000",
+    "footer": "Crow Bot - Made with ❤️",
+    "thumbnail": "BOT_THUMBNAIL_URL"
+  },
+  "logs": {
+    "enabled": true,
+    "channels": {
+      "error": "",
+      "command": "",
+      "welcome": ""
+    }
+  },
+  "whitelist": {
+    "enabled": true,
+    "users": [
+      ""
+    ]
+  }
 }
