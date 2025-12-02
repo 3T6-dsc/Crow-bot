@@ -119,6 +119,7 @@
 | Commande | Usage | Description |
 | :--- | :--- | :--- |
 | `help` | `help [commande]` | Affiche la liste des commandes ou l'aide détaillée. |
+| `ping` | `ping` | Affiche la latence du bot et de l'API. |
 | `snipe` | `snipe` | Affiche le dernier message supprimé dans le salon. |
 | `prix` | `prix` | Affiche les tarifs des services. |
 
