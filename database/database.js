@@ -29,8 +29,18 @@ db.serialize(() => {
             console.log('Table sanctions vérifiée/créée avec succès');
         }
     });
+
+    // Création de la table guild_settings pour les configurations (Anti-Link, etc.)
+    db.run(`CREATE TABLE IF NOT EXISTS guild_settings (
+        guild_id TEXT PRIMARY KEY,
+        antilink_enabled INTEGER DEFAULT 0
+    )`, (err) => {
+        if (err) {
+            console.error('Erreur lors de la création de la table guild_settings:', err);
+        } else {
+            console.log('Table guild_settings vérifiée/créée avec succès');
+        }
+    });
 });
 
 module.exports = db;
-
-
