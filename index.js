@@ -13,7 +13,8 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildVoiceStates
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildMessageReactions
     ]
 });
 
@@ -74,5 +75,3 @@ client.once('ready', async () => {
     }
     console.log('Bot prêt !');
 });
-
-

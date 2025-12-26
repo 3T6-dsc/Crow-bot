@@ -131,3 +131,4 @@ dist
 config.json
 *.db
 /database
+config.json

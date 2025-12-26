@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: 'lock',
@@ -7,7 +7,7 @@ module.exports = {
     permissions: ['ManageChannels'],
     category: 'antiraid',
     async execute(message, args, client) {
-        // Vérifier les permissions
+        // Vérifier les permissions de l'utilisateur
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
             return message.reply("Vous n'avez pas la permission de verrouiller les salons.");
         }
@@ -24,11 +24,8 @@ module.exports = {
         const reason = args.filter(arg => !arg.startsWith('<#')).join(' ') || 'Aucune raison spécifiée';
 
         try {
-            // Sauvegarder les permissions actuelles du rôle @everyone pour ce salon
+            // Vérifier si le salon est déjà verrouillé
             const currentPermissions = channel.permissionOverwrites.cache.get(message.guild.id);
-            const currentSendMessages = currentPermissions ? currentPermissions.allow.has(PermissionsBitField.Flags.SendMessages) : null;
-
-            // Si le salon est déjà verrouillé
             if (currentPermissions && currentPermissions.deny.has(PermissionsBitField.Flags.SendMessages)) {
                 return message.reply("Ce salon est déjà verrouillé.");
             }
@@ -41,29 +38,40 @@ module.exports = {
                 .setFooter({ text: client.config.embed.footer })
                 .setTimestamp();
 
+            // Créer les boutons de confirmation
+            const row = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('confirm_lock')
+                        .setLabel('Confirmer')
+                        .setStyle(ButtonStyle.Success)
+                        .setEmoji('✅'),
+                    new ButtonBuilder()
+                        .setCustomId('cancel_lock')
+                        .setLabel('Annuler')
+                        .setStyle(ButtonStyle.Danger)
+                        .setEmoji('❌')
+                );
+
             // Envoyer le message de confirmation
-            const confirmMessage = await message.reply({ embeds: [confirmEmbed] });
+            const confirmMessage = await message.reply({ 
+                embeds: [confirmEmbed], 
+                components: [row] 
+            });
 
-            // Ajouter les réactions
-            await confirmMessage.react('✅');
-            await confirmMessage.react('❌');
+            // Collecter la réponse via les boutons
+            const filter = i => i.user.id === message.author.id;
+            const collector = confirmMessage.createMessageComponentCollector({ filter, time: 30000, max: 1 });
 
-            // Collecter la réponse
-            const filter = (reaction, user) => {
-                return ['✅', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
-            };
-
-            const collector = confirmMessage.createReactionCollector({ filter, time: 30000, max: 1 });
-
-            collector.on('collect', async (reaction, user) => {
-                if (reaction.emoji.name === '✅') {
+            collector.on('collect', async interaction => {
+                if (interaction.customId === 'confirm_lock') {
                     try {
                         // Verrouiller le salon
                         await channel.permissionOverwrites.edit(message.guild.id, {
                             SendMessages: false
                         });
 
-                        // Créer l'embed de verrouillage
+                        // Créer l'embed final
                         const lockEmbed = new EmbedBuilder()
                             .setColor(client.config.embed.color)
                             .setTitle('🔒 Salon verrouillé')
@@ -71,47 +79,41 @@ module.exports = {
                             .setFooter({ text: client.config.embed.footer })
                             .setTimestamp();
 
-                        await channel.send({ embeds: [lockEmbed] });
+                        // Mettre à jour le message d'origine
+                        await interaction.update({ embeds: [lockEmbed], components: [] });
 
-                        // Supprimer le message de confirmation
-                        await confirmMessage.delete();
+                        // Si le salon verrouillé est différent du salon actuel, envoyer un message là-bas aussi
+                        if (channel.id !== message.channel.id) {
+                            await channel.send({ embeds: [lockEmbed] });
+                        }
 
-                        // Envoyer dans les logs si activés
+                        // Envoyer dans les logs de modération
                         if (client.config.logs.enabled && client.config.logs.channels.moderation) {
                             const logChannel = message.guild.channels.cache.get(client.config.logs.channels.moderation);
                             if (logChannel) {
-                                const logEmbed = new EmbedBuilder()
-                                    .setColor(client.config.embed.color)
-                                    .setTitle('🔒 Salon verrouillé')
-                                    .setDescription(`**Salon:** ${channel}\n**Modérateur:** ${message.author.tag}\n**Raison:** ${reason}`)
-                                    .setFooter({ text: client.config.embed.footer })
-                                    .setTimestamp();
-
-                                await logChannel.send({ embeds: [logEmbed] });
+                                logChannel.send({ embeds: [lockEmbed] });
                             }
                         }
 
                     } catch (error) {
                         console.error('Erreur lors du verrouillage du salon:', error);
-                        message.channel.send("Une erreur est survenue lors du verrouillage du salon.");
+                        await interaction.reply({ content: "Une erreur est survenue lors du verrouillage du salon.", ephemeral: true });
                     }
                 } else {
-                    // Si l'utilisateur annule
-                    await confirmMessage.delete();
-                    message.channel.send("Verrouillage annulé.");
+                    // Annulation
+                    await interaction.update({ content: "🚫 Verrouillage annulé.", embeds: [], components: [] });
                 }
             });
 
-            collector.on('end', collected => {
-                if (collected.size === 0) {
-                    confirmMessage.delete().catch(() => {});
-                    message.channel.send("Temps écoulé, verrouillage annulé.");
+            collector.on('end', (collected, reason) => {
+                if (reason === 'time' && collected.size === 0) {
+                    confirmMessage.edit({ content: "⏰ Temps écoulé, action annulée.", embeds: [], components: [] }).catch(() => {});
                 }
             });
 
         } catch (error) {
             console.error('Erreur lors du verrouillage:', error);
-            message.reply("Une erreur est survenue lors du verrouillage du salon.");
+            message.reply("Une erreur est survenue lors de l'exécution de la commande.");
         }
     }
 };
